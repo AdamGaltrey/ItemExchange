@@ -14,6 +14,7 @@ import com.adamki11s.itemexchange.Config;
 import com.adamki11s.itemexchange.ItemExchange;
 import com.adamki11s.itemexchange.exchange.BuyEntry;
 import com.adamki11s.itemexchange.exchange.Exchange;
+import com.adamki11s.itemexchange.exchange.ExchangePoll;
 import com.adamki11s.itemexchange.exchange.SellEntry;
 import com.adamki11s.itemexchange.sql.SyncSQL;
 
@@ -136,6 +137,7 @@ public class Database {
 							+ String.format("%s, %s, %d, %d, %d, %d", e.getBuyerUUID(), e.getItem().toString(), e.getQuantity(),
 									e.getMaxCPU(), e.getQuantityBought(), e.getTimeSubmitted()) + ");");
 					Exchange.addBuyEntryAsync(e);
+					ExchangePoll.markChanged();
 					callback.sendMessage(ChatColor.GREEN + "Your offer was successfully listed on the exchange.");
 				} catch (SQLException e1) {
 					e1.printStackTrace();
@@ -157,6 +159,7 @@ public class Database {
 							+ String.format("%s, %s, %d, %d, %d, %d", e.getSellerUUID(), e.getItem().toString(), e.getListedQuantity(),
 									e.getCostPerUnit(), e.getQuantitySold(), e.getTimeListed()) + ");");
 					Exchange.addSellEntryAsync(e);
+					ExchangePoll.markChanged();
 					callback.sendMessage(ChatColor.GREEN + "Your item was successfully listed on the exchange.");
 				} catch (SQLException e1) {
 					e1.printStackTrace();

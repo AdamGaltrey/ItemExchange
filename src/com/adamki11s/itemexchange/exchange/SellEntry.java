@@ -2,7 +2,10 @@ package com.adamki11s.itemexchange.exchange;
 
 import org.bukkit.Material;
 
-public class SellEntry {
+import com.adamki11s.itemexchange.database.Database;
+import com.adamki11s.itemexchange.sql.SQLQueries;
+
+public class SellEntry implements Comparable<SellEntry> {
 	
 	/*
 	 * An exchange entry to the system
@@ -47,6 +50,10 @@ public class SellEntry {
 		return sold;
 	}
 	
+	public int getQuantityRemaining(){
+		return quantity - sold;
+	}
+	
 	/*
 	 * Used to stop searching through entries which have already been sold out
 	 */
@@ -56,5 +63,17 @@ public class SellEntry {
 	
 	public void itemsSold(int quantity){
 		//increment the entry by the amount given and update sql database
+		sold += quantity;
+		SQLQueries.addQuery("UPDATE " + Database.ITEM_TABLE + " SET sold=" + sold + " WHERE seller='" + sellerUUID + "' AND time=" + time + ";");
+	}
+
+	@Override
+	public int compareTo(SellEntry se) {
+		//ascending order
+				//return this.quantity - compareQuantity;
+		
+				//descending order
+				//return compareQuantity - this.quantity;
+		return getCostPerUnit() - se.getCostPerUnit();
 	}
 }

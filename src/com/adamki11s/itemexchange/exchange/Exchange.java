@@ -8,10 +8,10 @@ import com.adamki11s.itemexchange.ItemExchange;
 
 public class Exchange {
 	
-	private static List<SellEntry> buyableEntries;
-	private static List<SellEntry> soldEntries;
+	public static List<SellEntry> buyableEntries;
+	public static List<SellEntry> soldEntries;
 	
-	private static List<BuyEntry> offers;
+	public static List<BuyEntry> offers;
 	
 	public static void initExchange(List<SellEntry> loaded, List<BuyEntry> buyEntries){
 		buyableEntries = Collections.synchronizedList(new ArrayList<SellEntry>());
@@ -39,5 +39,6 @@ public class Exchange {
 	public static void addBuyEntryAsync(BuyEntry e){
 		offers.add(e);
 	}
+	
 
 }

@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import net.milkbowl.vault.economy.Economy;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,8 +13,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.adamki11s.itemexchange.database.Database;
 import com.adamki11s.itemexchange.exchange.BuyEntry;
 import com.adamki11s.itemexchange.exchange.Exchange;
+import com.adamki11s.itemexchange.exchange.ExchangePoll;
 import com.adamki11s.itemexchange.exchange.ProfileManager;
 import com.adamki11s.itemexchange.exchange.SellEntry;
+import com.adamki11s.itemexchange.sql.SQLQueries;
 
 public class ItemExchange extends JavaPlugin {
 
@@ -34,6 +37,9 @@ public class ItemExchange extends JavaPlugin {
 		ProfileManager.initProfiles(sellEntries, buyEntries);
 		
 		setupEconomy();
+		
+		Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ExchangePoll(), 0, 20);
+		Bukkit.getScheduler().runTaskTimerAsynchronously(this, new SQLQueries(), 0, 20);
 	}
 
 	private boolean setupEconomy() {

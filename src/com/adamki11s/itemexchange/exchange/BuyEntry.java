@@ -2,6 +2,9 @@ package com.adamki11s.itemexchange.exchange;
 
 import org.bukkit.Material;
 
+import com.adamki11s.itemexchange.database.Database;
+import com.adamki11s.itemexchange.sql.SQLQueries;
+
 public class BuyEntry {
 	
 	private final String buyerUUID;
@@ -34,6 +37,10 @@ public class BuyEntry {
 	public int getQuantity() {
 		return quantity;
 	}
+	
+	public int getRemainingQuantity(){
+		return quantity - quantityBought;
+	}
 
 	public int getMaxCPU() {
 		return maxCPU;
@@ -45,6 +52,9 @@ public class BuyEntry {
 	
 	public void itemsBought(int quantity){
 		//increment the entry by the amount given and update sql database
+		quantityBought += quantity;
+		//update SQL DB
+		SQLQueries.addQuery("UPDATE " + Database.OFFER_TABLE + " SET bought=" + quantityBought + " WHERE buyer='" + buyerUUID + "' AND time=" + timeSubmitted + ";");
 	}
 
 }
