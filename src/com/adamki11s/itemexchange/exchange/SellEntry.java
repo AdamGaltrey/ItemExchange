@@ -2,7 +2,7 @@ package com.adamki11s.itemexchange.exchange;
 
 import org.bukkit.Material;
 
-public class Entry {
+public class SellEntry {
 	
 	/*
 	 * An exchange entry to the system
@@ -14,7 +14,7 @@ public class Entry {
 	private final long time;
 	private int sold;
 	
-	public Entry(String sellerUUID, Material item, int quantity, int costPerUnit, int sold, long time) {
+	public SellEntry(String sellerUUID, Material item, int quantity, int costPerUnit, int sold, long time) {
 		this.sellerUUID = sellerUUID;
 		this.item = item;
 		this.quantity = quantity;

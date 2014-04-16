@@ -8,14 +8,14 @@ import com.adamki11s.itemexchange.ItemExchange;
 
 public class Exchange {
 	
-	private static List<Entry> buyableEntries;
-	private static List<Entry> soldEntries;
+	private static List<SellEntry> buyableEntries;
+	private static List<SellEntry> soldEntries;
 	
-	public static void initExchange(List<Entry> loaded){
-		buyableEntries = Collections.synchronizedList(new ArrayList<Entry>());
-		soldEntries = Collections.synchronizedList(new ArrayList<Entry>());
+	public static void initExchange(List<SellEntry> loaded){
+		buyableEntries = Collections.synchronizedList(new ArrayList<SellEntry>());
+		soldEntries = Collections.synchronizedList(new ArrayList<SellEntry>());
 		
-		for(Entry e : loaded){
+		for(SellEntry e : loaded){
 			if(e.isPurchasable()){
 				buyableEntries.add(e);
 			} else {
@@ -26,7 +26,7 @@ public class Exchange {
 		ItemExchange.getLog().info(String.format("Loaded a total of %d exchange entries.", loaded.size()));
 	}
 	
-	public static void addEntryAsync(Entry e){
+	public static void addEntryAsync(SellEntry e){
 		buyableEntries.add(e);
 	}
 

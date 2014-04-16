@@ -22,7 +22,7 @@ public class ExchangeActions {
 					p.sendMessage(ChatColor.RED + "Enchanted items cannot be sold!");
 				} else {
 					//item is not enchanted
-					Entry e = new Entry(p.getUniqueId().toString(), is.getType(), is.getAmount(), cpu, 0, System.currentTimeMillis());
+					SellEntry e = new SellEntry(p.getUniqueId().toString(), is.getType(), is.getAmount(), cpu, 0, System.currentTimeMillis());
 					//add to player profile
 					pp.addEntry(e);
 					//add to sql database, once added to sql the data will be pushed to the live list

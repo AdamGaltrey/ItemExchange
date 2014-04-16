@@ -13,8 +13,8 @@ public class ProfileManager {
 	//maps UUID to player profile
 	private static Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
 	
-	public static void initProfiles(List<Entry> entries){
-		for(Entry e : entries){
+	public static void initProfiles(List<SellEntry> sellEntries){
+		for(SellEntry e : sellEntries){
 			if(!profiles.containsKey(e.getSellerUUID())){
 				profiles.put(e.getSellerUUID(), new PlayerProfile());
 			}

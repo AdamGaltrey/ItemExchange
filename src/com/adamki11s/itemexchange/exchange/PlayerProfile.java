@@ -6,16 +6,16 @@ import java.util.List;
 
 public class PlayerProfile {
 
-	private List<Entry> entries = new ArrayList<Entry>();
+	private List<SellEntry> sellEntries = new ArrayList<SellEntry>();
 
-	public void addEntry(Entry e) {
-		this.entries.add(e);
+	public void addEntry(SellEntry e) {
+		this.sellEntries.add(e);
 	}
 
-	public boolean removeEntry(Entry e) {
-		Iterator<Entry> it = entries.iterator();
+	public boolean removeEntry(SellEntry e) {
+		Iterator<SellEntry> it = sellEntries.iterator();
 		while (it.hasNext()) {
-			Entry e1 = it.next();
+			SellEntry e1 = it.next();
 			if (e1.getTimeListed() == e.getTimeListed()) {
 				it.remove();
 				return true;
@@ -25,11 +25,11 @@ public class PlayerProfile {
 	}
 	
 	public int getEntries(){
-		return entries.size();
+		return sellEntries.size();
 	}
 	
 	public boolean hasMaxEntries(){
-		return entries.size() >= 9;
+		return sellEntries.size() >= 9;
 	}
 
 }

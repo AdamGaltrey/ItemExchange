@@ -10,7 +10,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.adamki11s.itemexchange.database.Database;
-import com.adamki11s.itemexchange.exchange.Entry;
+import com.adamki11s.itemexchange.exchange.SellEntry;
 import com.adamki11s.itemexchange.exchange.Exchange;
 import com.adamki11s.itemexchange.exchange.ProfileManager;
 
@@ -27,9 +27,9 @@ public class ItemExchange extends JavaPlugin {
 		l = getLogger();
 		Config.init();
 
-		List<Entry> entries = Database.loadEntries();
-		Exchange.initExchange(entries);
-		ProfileManager.initProfiles(entries);
+		List<SellEntry> sellEntries = Database.loadEntries();
+		Exchange.initExchange(sellEntries);
+		ProfileManager.initProfiles(sellEntries);
 		
 		setupEconomy();
 	}

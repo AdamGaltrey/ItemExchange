@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 import com.adamki11s.itemexchange.Config;
 import com.adamki11s.itemexchange.ItemExchange;
-import com.adamki11s.itemexchange.exchange.Entry;
+import com.adamki11s.itemexchange.exchange.SellEntry;
 import com.adamki11s.itemexchange.exchange.Exchange;
 import com.adamki11s.itemexchange.sql.SyncSQL;
 
@@ -75,23 +75,23 @@ public class Database {
 		}
 	}
 
-	public static List<Entry> loadEntries() {
+	public static List<SellEntry> loadEntries() {
 		ResultSet s;
-		List<Entry> entries = new ArrayList<Entry>();
+		List<SellEntry> sellEntries = new ArrayList<SellEntry>();
 		try {
 			s = sql.sqlQuery("SELECT * FROM " + ITEM_TABLE + ";");
 			while (s.next()) {
-				Entry e = new Entry(s.getString("seller"), Material.valueOf(s.getString("item")), s.getInt("quantity"), s.getInt("cpu"),
+				SellEntry e = new SellEntry(s.getString("seller"), Material.valueOf(s.getString("item")), s.getInt("quantity"), s.getInt("cpu"),
 						s.getInt("sold"), s.getLong("time"));
-				entries.add(e);
+				sellEntries.add(e);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return entries;
+		return sellEntries;
 	}
 
-	public static void addEntryAsync(final Entry e, final Player callback) {
+	public static void addEntryAsync(final SellEntry e, final Player callback) {
 		Bukkit.getScheduler().runTaskAsynchronously(ItemExchange.getPlugin(), new Runnable() {
 			
 			@Override
