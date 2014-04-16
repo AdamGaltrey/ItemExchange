@@ -7,14 +7,20 @@ public class BuyEntry {
 	private final String buyerUUID;
 	private final Material item;
 	private final int quantity, maxCPU;
+	private final long timeSubmitted;
 	private int quantityBought;
 	
-	public BuyEntry(String buyerUUID, Material item, int quantity, int maxCPU, int quantityBought) {
+	public BuyEntry(String buyerUUID, Material item, int quantity, int maxCPU, int quantityBought, long timeSubmitted) {
 		this.buyerUUID = buyerUUID;
 		this.item = item;
 		this.quantity = quantity;
 		this.maxCPU = maxCPU;
 		this.quantityBought = quantityBought;
+		this.timeSubmitted = timeSubmitted;
+	}
+	
+	public long getTimeSubmitted(){
+		return timeSubmitted;
 	}
 
 	public String getBuyerUUID() {

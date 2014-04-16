@@ -10,9 +10,10 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.adamki11s.itemexchange.database.Database;
-import com.adamki11s.itemexchange.exchange.SellEntry;
+import com.adamki11s.itemexchange.exchange.BuyEntry;
 import com.adamki11s.itemexchange.exchange.Exchange;
 import com.adamki11s.itemexchange.exchange.ProfileManager;
+import com.adamki11s.itemexchange.exchange.SellEntry;
 
 public class ItemExchange extends JavaPlugin {
 
@@ -27,9 +28,10 @@ public class ItemExchange extends JavaPlugin {
 		l = getLogger();
 		Config.init();
 
-		List<SellEntry> sellEntries = Database.loadEntries();
-		Exchange.initExchange(sellEntries);
-		ProfileManager.initProfiles(sellEntries);
+		List<SellEntry> sellEntries = Database.loadSellEntries();
+		List<BuyEntry> buyEntries = Database.loadBuyEntries();
+		Exchange.initExchange(sellEntries, buyEntries);
+		ProfileManager.initProfiles(sellEntries, buyEntries);
 		
 		setupEconomy();
 	}

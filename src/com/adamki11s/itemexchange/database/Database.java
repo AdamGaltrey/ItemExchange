@@ -12,15 +12,16 @@ import org.bukkit.entity.Player;
 
 import com.adamki11s.itemexchange.Config;
 import com.adamki11s.itemexchange.ItemExchange;
-import com.adamki11s.itemexchange.exchange.SellEntry;
+import com.adamki11s.itemexchange.exchange.BuyEntry;
 import com.adamki11s.itemexchange.exchange.Exchange;
+import com.adamki11s.itemexchange.exchange.SellEntry;
 import com.adamki11s.itemexchange.sql.SyncSQL;
 
 public class Database {
 
 	public static SyncSQL sql;
 
-	public static String ITEM_TABLE = "iex_items", HISTORY_TABLE = "iex_history", DATA_TABLE = "iex_data";
+	public static String ITEM_TABLE = "iex_items", OFFER_TABLE = "iex_offers", HISTORY_TABLE = "iex_history", DATA_TABLE = "iex_data";
 
 	public static void initDatabase(boolean useSQL, String... data) {
 		// [host, database, username, password]
@@ -44,6 +45,14 @@ public class Database {
 							+ "(id INT NOT NULL PRIMARY KEY, seller VARCHAR(36), item VARCHAR(60), quantity INTEGER, cpu INTEGER, sold INTEGER, time LONG);";
 					sql.standardQuery(create);
 					ItemExchange.getLog().info("Item table created.");
+				}
+				
+				if (!sql.doesTableExist(OFFER_TABLE)) {
+					create = "CREATE TABLE "
+							+ OFFER_TABLE
+							+ "(id INT NOT NULL PRIMARY KEY, buyer VARCHAR(36), item VARCHAR(60), quantity INTEGER, maxcpu INTEGER, bought INTEGER, time LONG);";
+					sql.standardQuery(create);
+					ItemExchange.getLog().info("Offer table created.");
 				}
 
 				if (!sql.doesTableExist(HISTORY_TABLE)) {
@@ -75,7 +84,7 @@ public class Database {
 		}
 	}
 
-	public static List<SellEntry> loadEntries() {
+	public static List<SellEntry> loadSellEntries() {
 		ResultSet s;
 		List<SellEntry> sellEntries = new ArrayList<SellEntry>();
 		try {
@@ -90,8 +99,53 @@ public class Database {
 		}
 		return sellEntries;
 	}
+	
+	/*
+	 * create = "CREATE TABLE "
+							+ ITEM_TABLE
+							+ "(id INT NOT NULL PRIMARY KEY, buyer VARCHAR(36), item VARCHAR(60), quantity INTEGER, maxcpu INTEGER, bought INTEGER, time LONG);";
+					sql.standardQuery(create);
+					ItemExchange.getLog().info("Offer table created.");
+	 */
+	
+	public static List<BuyEntry> loadBuyEntries() {
+		ResultSet s;
+		List<BuyEntry> buyEntries = new ArrayList<BuyEntry>();
+		try {
+			s = sql.sqlQuery("SELECT * FROM " + OFFER_TABLE + ";");
+			while (s.next()) {
+				BuyEntry e = new BuyEntry(s.getString("buyer"), Material.valueOf(s.getString("item")), s.getInt("quantity"), s.getInt("maxcpu"),
+						s.getInt("bought"), s.getLong("time"));
+				buyEntries.add(e);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return buyEntries;
+	}
+	
+	public static void addBuyEntryAsync(final BuyEntry e, final Player callback) {
+		Bukkit.getScheduler().runTaskAsynchronously(ItemExchange.getPlugin(), new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					sql.standardQuery("INSERT INTO "
+							+ OFFER_TABLE
+							+ "(buyer, item, quantity, maxcpu, bought, time) VALUES ("
+							+ String.format("%s, %s, %d, %d, %d, %d", e.getBuyerUUID(), e.getItem().toString(), e.getQuantity(),
+									e.getMaxCPU(), e.getQuantityBought(), e.getTimeSubmitted()) + ");");
+					Exchange.addBuyEntryAsync(e);
+					callback.sendMessage(ChatColor.GREEN + "Your offer was successfully listed on the exchange.");
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+					callback.sendMessage(ChatColor.RED + "There was an error syncing your offer with the database.");
+				}
+			}
+		});
+	}
 
-	public static void addEntryAsync(final SellEntry e, final Player callback) {
+	public static void addSellEntryAsync(final SellEntry e, final Player callback) {
 		Bukkit.getScheduler().runTaskAsynchronously(ItemExchange.getPlugin(), new Runnable() {
 			
 			@Override
@@ -102,7 +156,7 @@ public class Database {
 							+ "(seller, item, quantity, cpu, sold, time) VALUES ("
 							+ String.format("%s, %s, %d, %d, %d, %d", e.getSellerUUID(), e.getItem().toString(), e.getListedQuantity(),
 									e.getCostPerUnit(), e.getQuantitySold(), e.getTimeListed()) + ");");
-					Exchange.addEntryAsync(e);
+					Exchange.addSellEntryAsync(e);
 					callback.sendMessage(ChatColor.GREEN + "Your item was successfully listed on the exchange.");
 				} catch (SQLException e1) {
 					e1.printStackTrace();

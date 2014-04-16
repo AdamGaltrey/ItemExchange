@@ -1,6 +1,7 @@
 package com.adamki11s.itemexchange.exchange;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -8,7 +9,7 @@ import com.adamki11s.itemexchange.database.Database;
 
 public class ExchangeActions {
 	
-	public static void addEntry(Player p, int cpu){
+	public static void addSellEntry(Player p, int cpu){
 		PlayerProfile pp = ProfileManager.getPlayerProfile(p);
 		if(pp.hasMaxEntries()){
 			p.sendMessage(ChatColor.RED + "You do not have any free slots!");
@@ -24,11 +25,22 @@ public class ExchangeActions {
 					//item is not enchanted
 					SellEntry e = new SellEntry(p.getUniqueId().toString(), is.getType(), is.getAmount(), cpu, 0, System.currentTimeMillis());
 					//add to player profile
-					pp.addEntry(e);
+					pp.addSellEntry(e);
 					//add to sql database, once added to sql the data will be pushed to the live list
-					Database.addEntryAsync(e, p);
+					Database.addSellEntryAsync(e, p);
 				}
 			}
+		}
+	}
+	
+	public static void addBuyEntry(Player p, Material m, int quantity, int maxCPU){
+		PlayerProfile pp = ProfileManager.getPlayerProfile(p);
+		if(pp.hasMaxEntries()){
+			p.sendMessage(ChatColor.RED + "You do not have any free slots!");
+		} else {
+			BuyEntry e = new BuyEntry(p.getUniqueId().toString(), m, quantity, maxCPU, 0, System.currentTimeMillis());
+			pp.addBuyEntry(e);
+			Database.addBuyEntryAsync(e, p);
 		}
 	}
 

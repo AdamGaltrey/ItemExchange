@@ -11,9 +11,12 @@ public class Exchange {
 	private static List<SellEntry> buyableEntries;
 	private static List<SellEntry> soldEntries;
 	
-	public static void initExchange(List<SellEntry> loaded){
+	private static List<BuyEntry> offers;
+	
+	public static void initExchange(List<SellEntry> loaded, List<BuyEntry> buyEntries){
 		buyableEntries = Collections.synchronizedList(new ArrayList<SellEntry>());
 		soldEntries = Collections.synchronizedList(new ArrayList<SellEntry>());
+		offers = Collections.synchronizedList(new ArrayList<BuyEntry>());
 		
 		for(SellEntry e : loaded){
 			if(e.isPurchasable()){
@@ -23,11 +26,18 @@ public class Exchange {
 			}
 		}
 		
-		ItemExchange.getLog().info(String.format("Loaded a total of %d exchange entries.", loaded.size()));
+		offers.addAll(buyEntries);
+		
+		ItemExchange.getLog().info(String.format("Loaded a total of %d sale exchange entries.", loaded.size()));
+		ItemExchange.getLog().info(String.format("Loaded a total of %d purchase exchange entries.", buyEntries.size()));
 	}
 	
-	public static void addEntryAsync(SellEntry e){
+	public static void addSellEntryAsync(SellEntry e){
 		buyableEntries.add(e);
+	}
+	
+	public static void addBuyEntryAsync(BuyEntry e){
+		offers.add(e);
 	}
 
 }
