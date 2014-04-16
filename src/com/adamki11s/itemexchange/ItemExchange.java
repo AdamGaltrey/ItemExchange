@@ -1,12 +1,15 @@
 package com.adamki11s.itemexchange;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.adamki11s.itemexchange.database.Database;
+import com.adamki11s.itemexchange.exchange.Entry;
 import com.adamki11s.itemexchange.exchange.Exchange;
+import com.adamki11s.itemexchange.exchange.ProfileManager;
 
 public class ItemExchange extends JavaPlugin {
 	
@@ -18,7 +21,10 @@ public class ItemExchange extends JavaPlugin {
 		p = this;
 		l = getLogger();
 		Config.init();
-		Exchange.initExchange(Database.loadEntries());
+
+		List<Entry> entries = Database.loadEntries();
+		Exchange.initExchange(entries);
+		ProfileManager.initProfiles(entries);
 	}
 	
 	public static Plugin getPlugin(){
