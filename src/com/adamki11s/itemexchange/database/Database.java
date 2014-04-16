@@ -1,9 +1,13 @@
 package com.adamki11s.itemexchange.database;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.adamki11s.itemexchange.Config;
 import com.adamki11s.itemexchange.ItemExchange;
+import com.adamki11s.itemexchange.exchange.Entry;
 import com.adamki11s.itemexchange.sql.SyncSQL;
 
 public class Database {
@@ -61,6 +65,21 @@ public class Database {
 		} else {
 			ItemExchange.getLog().severe("SQL connection failed!");
 		}
+	}
+	
+	public static List<Entry> loadEntries(){
+		ResultSet s;
+		List<Entry> entries = new ArrayList<Entry>();
+		try {
+			s = sql.sqlQuery("SELECT * FROM " + ITEM_TABLE + ";");
+			while(s.next()){
+				Entry e = new Entry(s.getString("seller"), s.getInt("itemid"), s.getInt("quantity"), s.getInt("cpu"), s.getInt("sold"), s.getLong("time"));
+				entries.add(e);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return entries;
 	}
 
 }
