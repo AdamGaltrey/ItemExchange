@@ -1,5 +1,7 @@
 package com.adamki11s.itemexchange.exchange;
 
+import org.bukkit.Material;
+
 public class Entry {
 	
 	/*
@@ -7,13 +9,14 @@ public class Entry {
 	 */
 	
 	private final String sellerUUID;
-	private final int itemID, quantity, costPerUnit;
+	private final int quantity, costPerUnit;
+	private final Material item;
 	private final long time;
 	private int sold;
 	
-	public Entry(String sellerUUID, int itemID, int quantity, int costPerUnit, int sold, long time) {
+	public Entry(String sellerUUID, Material item, int quantity, int costPerUnit, int sold, long time) {
 		this.sellerUUID = sellerUUID;
-		this.itemID = itemID;
+		this.item = item;
 		this.quantity = quantity;
 		this.costPerUnit = costPerUnit;
 		this.sold = sold;
@@ -24,8 +27,8 @@ public class Entry {
 		return sellerUUID;
 	}
 
-	public int getItemID() {
-		return itemID;
+	public Material getItem() {
+		return item;
 	}
 
 	public int getListedQuantity() {
