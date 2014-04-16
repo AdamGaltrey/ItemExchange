@@ -1,9 +1,10 @@
-package com.adamki11s.itemexchange.sql;
+package com.adamki11s.itemexchange.database;
 
 import java.sql.SQLException;
 
 import com.adamki11s.itemexchange.Config;
 import com.adamki11s.itemexchange.ItemExchange;
+import com.adamki11s.itemexchange.sql.SyncSQL;
 
 public class Database {
 

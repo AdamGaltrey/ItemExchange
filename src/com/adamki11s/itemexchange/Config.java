@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.adamki11s.itemexchange.sql.Database;
+import com.adamki11s.itemexchange.database.Database;
 
 public class Config {
 
