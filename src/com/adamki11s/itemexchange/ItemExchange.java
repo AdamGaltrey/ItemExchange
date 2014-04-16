@@ -14,7 +14,7 @@ public class ItemExchange extends JavaPlugin {
 	public void onEnable(){
 		p = this;
 		l = getLogger();
-		Files.init();
+		Config.init();
 	}
 	
 	public static Plugin getPlugin(){
