@@ -1,13 +1,10 @@
-package com.adamki11s.itemexchange.gui;
+package com.adamki11s.itemexchange.exchange;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.adamki11s.itemexchange.database.Database;
-import com.adamki11s.itemexchange.exchange.Entry;
-import com.adamki11s.itemexchange.exchange.PlayerProfile;
-import com.adamki11s.itemexchange.exchange.ProfileManager;
 
 public class ExchangeActions {
 	
