@@ -8,7 +8,10 @@ public class ExchangePoll implements Runnable {
 
 	/*
 	 * This will poll every second, but only if there have been updates to the
-	 * system This thread will attempt to match buyers and sellers
+	 * system.
+	 * 
+	 * The sellers price will always remain locked, and will seek to find the
+	 * buyer the lowest possible price for their items
 	 */
 
 	private static volatile boolean changed = true;
@@ -58,14 +61,15 @@ public class ExchangePoll implements Runnable {
 							break;
 						}
 					} else {
-						// doesn't need any more, or cost is higher than the max client is willing to pay
+						// doesn't need any more, or cost is higher than the max
+						// client is willing to pay
 						break;
 					}
 				}
 
 				int bought = quantityRemainingInit - remaining;
 				if (bought > 0) {
-					//register items have been bought, if any...
+					// register items have been bought, if any...
 					be.itemsBought(bought);
 				}
 			}

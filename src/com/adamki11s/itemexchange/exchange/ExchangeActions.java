@@ -15,7 +15,7 @@ public class ExchangeActions {
 			p.sendMessage(ChatColor.RED + "You do not have any free slots!");
 		} else {
 			ItemStack is = p.getItemInHand();
-			if(is == null){
+			if(is == null || is.getType().equals(Material.AIR)){
 				p.sendMessage(ChatColor.RED + "You are not holding an item!");
 			} else {
 				//item is not null
@@ -23,9 +23,11 @@ public class ExchangeActions {
 					p.sendMessage(ChatColor.RED + "Enchanted items cannot be sold!");
 				} else {
 					//item is not enchanted
-					SellEntry e = new SellEntry(p.getUniqueId().toString(), is.getType(), is.getAmount(), cpu, 0, System.currentTimeMillis());
+					SellEntry e = new SellEntry(p.getUniqueId().toString(), is.getType(), is.getData().getData(), is.getAmount(), cpu, 0, System.currentTimeMillis());
 					//add to player profile
 					pp.addSellEntry(e);
+					//remove itemstack
+					p.setItemInHand(null);
 					//add to sql database, once added to sql the data will be pushed to the live list
 					Database.addSellEntryAsync(e, p);
 				}
@@ -33,12 +35,12 @@ public class ExchangeActions {
 		}
 	}
 	
-	public static void addBuyEntry(Player p, Material m, int quantity, int maxCPU){
+	public static void addBuyEntry(Player p, Material m, int itemdata, int quantity, int maxCPU){
 		PlayerProfile pp = ProfileManager.getPlayerProfile(p);
 		if(pp.hasMaxEntries()){
 			p.sendMessage(ChatColor.RED + "You do not have any free slots!");
 		} else {
-			BuyEntry e = new BuyEntry(p.getUniqueId().toString(), m, quantity, maxCPU, 0, System.currentTimeMillis());
+			BuyEntry e = new BuyEntry(p.getUniqueId().toString(), m, itemdata, quantity, maxCPU, 0, System.currentTimeMillis());
 			pp.addBuyEntry(e);
 			Database.addBuyEntryAsync(e, p);
 		}
