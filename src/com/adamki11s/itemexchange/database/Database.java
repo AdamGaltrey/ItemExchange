@@ -43,7 +43,7 @@ public class Database {
 					 */
 					create = "CREATE TABLE "
 							+ ITEM_TABLE
-							+ "(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, seller VARCHAR(36), item VARCHAR(60), itemdata BYTE, quantity INTEGER, cpu INTEGER, sold INTEGER, time LONG);";
+							+ "(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, seller VARCHAR(36), item VARCHAR(60), itemdata INTEGER, quantity INTEGER, cpu INTEGER, sold INTEGER, time LONG);";
 					sql.standardQuery(create);
 					ItemExchange.getLog().info("Item table created.");
 				}
@@ -51,7 +51,7 @@ public class Database {
 				if (!sql.doesTableExist(OFFER_TABLE)) {
 					create = "CREATE TABLE "
 							+ OFFER_TABLE
-							+ "(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, buyer VARCHAR(36), item VARCHAR(60), itemdata BYTE, quantity INTEGER, maxcpu INTEGER, bought INTEGER, time LONG);";
+							+ "(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, buyer VARCHAR(36), item VARCHAR(60), itemdata INTEGER, quantity INTEGER, maxcpu INTEGER, bought INTEGER, time LONG);";
 					sql.standardQuery(create);
 					ItemExchange.getLog().info("Offer table created.");
 				}
@@ -59,7 +59,7 @@ public class Database {
 				if (!sql.doesTableExist(HISTORY_TABLE)) {
 					create = "CREATE TABLE "
 							+ HISTORY_TABLE
-							+ "(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, seller VARCHAR(36), buyer VARCHAR(36), item VARCHAR(60), itemdata BYTE, quantity INTEGER, cpu INTEGER, time LONG);";
+							+ "(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, seller VARCHAR(36), buyer VARCHAR(36), item VARCHAR(60), itemdata INTEGER, quantity INTEGER, cpu INTEGER, time LONG);";
 					sql.standardQuery(create);
 					ItemExchange.getLog().info("History table created.");
 				}
@@ -72,7 +72,7 @@ public class Database {
 					 * price point
 					 */
 					create = "CREATE TABLE " + DATA_TABLE
-							+ "(id INT NOT NULL PRIMARY KEY, item VARCHAR(60), itemdata BYTE, cumulative LONG, quantity LONG);";
+							+ "(id INT NOT NULL PRIMARY KEY, item VARCHAR(60), itemdata INTEGER, cumulative LONG, quantity LONG);";
 					sql.standardQuery(create);
 					ItemExchange.getLog().info("Data table created.");
 				}
