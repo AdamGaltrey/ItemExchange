@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.adamki11s.itemexchange.exchange.ExchangeActions;
 import com.adamki11s.itemexchange.exchange.PlayerProfile;
 import com.adamki11s.itemexchange.exchange.ProfileManager;
+import com.adamki11s.itemexchange.gui.ExchangeGUI;
 
 public class ExchangeCommands implements CommandExecutor {
 
@@ -28,6 +29,9 @@ public class ExchangeCommands implements CommandExecutor {
 						return true;
 					}
 					ExchangeActions.addSellEntry(p, cpu);
+					return true;
+				} else if(args.length == 1 && args[0].equalsIgnoreCase("buy")){
+					ExchangeGUI.openMenu(p, 1);
 					return true;
 				}
 				

@@ -17,6 +17,7 @@ import com.adamki11s.itemexchange.exchange.Exchange;
 import com.adamki11s.itemexchange.exchange.ExchangePoll;
 import com.adamki11s.itemexchange.exchange.ProfileManager;
 import com.adamki11s.itemexchange.exchange.SellEntry;
+import com.adamki11s.itemexchange.gui.ExchangeGUI;
 import com.adamki11s.itemexchange.sql.SQLQueries;
 
 public class ItemExchange extends JavaPlugin {
@@ -40,6 +41,10 @@ public class ItemExchange extends JavaPlugin {
 		setupEconomy();
 		
 		getCommand("itemexchange").setExecutor(new ExchangeCommands());
+		
+		//init listener
+		new ExchangeGUI(this);
+		ExchangeGUI.initialise();
 		
 		Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ExchangePoll(), 0, 20);
 		Bukkit.getScheduler().runTaskTimerAsynchronously(this, new SQLQueries(), 0, 20);
