@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.adamki11s.itemexchange.commands.ExchangeCommands;
 import com.adamki11s.itemexchange.database.Database;
 import com.adamki11s.itemexchange.exchange.BuyEntry;
 import com.adamki11s.itemexchange.exchange.Exchange;
@@ -38,8 +39,17 @@ public class ItemExchange extends JavaPlugin {
 		
 		setupEconomy();
 		
+		getCommand("itemexchange").setExecutor(new ExchangeCommands());
+		
 		Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ExchangePoll(), 0, 20);
 		Bukkit.getScheduler().runTaskTimerAsynchronously(this, new SQLQueries(), 0, 20);
+	}
+	
+	@Override
+	public void onDisable(){
+		if(Database.sql != null){
+			Database.sql.closeConnection();
+		}
 	}
 
 	private boolean setupEconomy() {

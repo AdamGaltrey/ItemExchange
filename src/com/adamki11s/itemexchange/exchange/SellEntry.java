@@ -12,14 +12,15 @@ public class SellEntry implements Comparable<SellEntry> {
 	 */
 	
 	private final String sellerUUID;
-	private final int quantity, costPerUnit;
+	private final int quantity, costPerUnit, itemdata;
 	private final Material item;
 	private final long time;
 	private int sold;
 	
-	public SellEntry(String sellerUUID, Material item, int quantity, int costPerUnit, int sold, long time) {
+	public SellEntry(String sellerUUID, Material item, int itemdata, int quantity, int costPerUnit, int sold, long time) {
 		this.sellerUUID = sellerUUID;
 		this.item = item;
+		this.itemdata = itemdata;
 		this.quantity = quantity;
 		this.costPerUnit = costPerUnit;
 		this.sold = sold;
@@ -32,6 +33,10 @@ public class SellEntry implements Comparable<SellEntry> {
 
 	public Material getItem() {
 		return item;
+	}
+	
+	public int getItemData(){
+		return itemdata;
 	}
 
 	public int getListedQuantity() {

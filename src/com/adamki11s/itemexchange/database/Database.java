@@ -43,7 +43,7 @@ public class Database {
 					 */
 					create = "CREATE TABLE "
 							+ ITEM_TABLE
-							+ "(id INT NOT NULL PRIMARY KEY, seller VARCHAR(36), item VARCHAR(60), quantity INTEGER, cpu INTEGER, sold INTEGER, time LONG);";
+							+ "(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, seller VARCHAR(36), item VARCHAR(60), itemdata BYTE, quantity INTEGER, cpu INTEGER, sold INTEGER, time LONG);";
 					sql.standardQuery(create);
 					ItemExchange.getLog().info("Item table created.");
 				}
@@ -51,7 +51,7 @@ public class Database {
 				if (!sql.doesTableExist(OFFER_TABLE)) {
 					create = "CREATE TABLE "
 							+ OFFER_TABLE
-							+ "(id INT NOT NULL PRIMARY KEY, buyer VARCHAR(36), item VARCHAR(60), quantity INTEGER, maxcpu INTEGER, bought INTEGER, time LONG);";
+							+ "(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, buyer VARCHAR(36), item VARCHAR(60), itemdata BYTE, quantity INTEGER, maxcpu INTEGER, bought INTEGER, time LONG);";
 					sql.standardQuery(create);
 					ItemExchange.getLog().info("Offer table created.");
 				}
@@ -59,7 +59,7 @@ public class Database {
 				if (!sql.doesTableExist(HISTORY_TABLE)) {
 					create = "CREATE TABLE "
 							+ HISTORY_TABLE
-							+ "(id INT NOT NULL PRIMARY KEY, seller VARCHAR(36), buyer VARCHAR(36), item VARCHAR(60), quantity INTEGER, cpu INTEGER, time LONG);";
+							+ "(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, seller VARCHAR(36), buyer VARCHAR(36), item VARCHAR(60), itemdata BYTE, quantity INTEGER, cpu INTEGER, time LONG);";
 					sql.standardQuery(create);
 					ItemExchange.getLog().info("History table created.");
 				}
@@ -72,7 +72,7 @@ public class Database {
 					 * price point
 					 */
 					create = "CREATE TABLE " + DATA_TABLE
-							+ "(id INT NOT NULL PRIMARY KEY, item VARCHAR(60), cumulative LONG, quantity LONG);";
+							+ "(id INT NOT NULL PRIMARY KEY, item VARCHAR(60), itemdata BYTE, cumulative LONG, quantity LONG);";
 					sql.standardQuery(create);
 					ItemExchange.getLog().info("Data table created.");
 				}
@@ -91,7 +91,7 @@ public class Database {
 		try {
 			s = sql.sqlQuery("SELECT * FROM " + ITEM_TABLE + ";");
 			while (s.next()) {
-				SellEntry e = new SellEntry(s.getString("seller"), Material.valueOf(s.getString("item")), s.getInt("quantity"), s.getInt("cpu"),
+				SellEntry e = new SellEntry(s.getString("seller"), Material.valueOf(s.getString("item")), s.getInt("itemdata"), s.getInt("quantity"), s.getInt("cpu"),
 						s.getInt("sold"), s.getLong("time"));
 				sellEntries.add(e);
 			}
@@ -115,7 +115,7 @@ public class Database {
 		try {
 			s = sql.sqlQuery("SELECT * FROM " + OFFER_TABLE + ";");
 			while (s.next()) {
-				BuyEntry e = new BuyEntry(s.getString("buyer"), Material.valueOf(s.getString("item")), s.getInt("quantity"), s.getInt("maxcpu"),
+				BuyEntry e = new BuyEntry(s.getString("buyer"), Material.valueOf(s.getString("item")), s.getInt("itemdata"), s.getInt("quantity"), s.getInt("maxcpu"),
 						s.getInt("bought"), s.getLong("time"));
 				buyEntries.add(e);
 			}
@@ -133,8 +133,8 @@ public class Database {
 				try {
 					sql.standardQuery("INSERT INTO "
 							+ OFFER_TABLE
-							+ "(buyer, item, quantity, maxcpu, bought, time) VALUES ("
-							+ String.format("%s, %s, %d, %d, %d, %d", e.getBuyerUUID(), e.getItem().toString(), e.getQuantity(),
+							+ "(buyer, item, itemdata, quantity, maxcpu, bought, time) VALUES ("
+							+ String.format("'%s', '%s', %d, %d, %d, %d", e.getBuyerUUID().toString(), e.getItem().toString(), e.getItemData(), e.getQuantity(),
 									e.getMaxCPU(), e.getQuantityBought(), e.getTimeSubmitted()) + ");");
 					Exchange.addBuyEntryAsync(e);
 					ExchangePoll.markChanged();
@@ -155,8 +155,8 @@ public class Database {
 				try {
 					sql.standardQuery("INSERT INTO "
 							+ ITEM_TABLE
-							+ "(seller, item, quantity, cpu, sold, time) VALUES ("
-							+ String.format("%s, %s, %d, %d, %d, %d", e.getSellerUUID(), e.getItem().toString(), e.getListedQuantity(),
+							+ " (seller, item, itemdata, quantity, cpu, sold, time) VALUES ("
+							+ String.format("'%s', '%s', %d, %d, %d, %d", e.getSellerUUID().toString(), e.getItem().toString(), e.getItemData(), e.getListedQuantity(),
 									e.getCostPerUnit(), e.getQuantitySold(), e.getTimeListed()) + ");");
 					Exchange.addSellEntryAsync(e);
 					ExchangePoll.markChanged();
